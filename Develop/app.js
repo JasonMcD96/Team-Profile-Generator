@@ -9,10 +9,53 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Choices = require("inquirer/lib/objects/choices");
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+
+// loop using inquirer???
+
+const teamCollection = async (inputs = []) => {
+    const prompts = [
+        {
+            type: 'input',
+            name: 'firstName',
+            message: 'Team Member First Name:'
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: 'What role does this member have?',
+            choices: ['Manager', 'Intern']
+        },
+        //Intern question(s)
+        {
+            type: 'input',
+            name: 'school',
+            message: 'What school do they go to?',
+            when: (answers) => answers.role === 'Intern'
+        },
+        {
+            type: 'confirm',
+            name: 'again',
+            message: 'Enter another team member?',
+            default: 'true'
+        }
+    ];
+
+    const {again, ...answers} = await inquirer.prompt(prompts)
+    const newInputs = [...inputs, answers]
+    return again ? teamCollection(newInputs) : newInputs;
+}
+
+const main = async () => {
+    const input = await teamCollection()
+    console.log('Here we go...:', input)
+}
+
+main();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
