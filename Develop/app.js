@@ -15,20 +15,34 @@ const Choices = require("inquirer/lib/objects/choices");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
-// loop using inquirer???
 
 const teamCollection = async (inputs = []) => {
     const prompts = [
         {
             type: 'input',
             name: 'firstName',
-            message: 'Team Member First Name:'
+            message: 'Team member first name:'
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: 'Team member last name:'
         },
         {
             type: 'list',
             name: 'role',
             message: 'What role does this member have?',
-            choices: ['Manager', 'Intern']
+            choices: ['Manager', 'Intern', 'Engineer']
+        },
+        {
+            type: 'input',
+            name: 'id',
+            message: 'What is their employee ID?'
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'What is their email'
         },
         //Intern question(s)
         {
@@ -37,6 +51,20 @@ const teamCollection = async (inputs = []) => {
             message: 'What school do they go to?',
             when: (answers) => answers.role === 'Intern'
         },
+        // Manager
+        {
+            type: 'input',
+            name: 'officeNumber',
+            message: 'What is their office number?',
+            when: (answers) => answers.role === 'Manager'
+        },
+        //Engineer
+        {
+            type: 'input',
+            name: 'github',
+            message: 'What is their github?',
+            when: (answers) => answers.role === 'Engineer'
+        },
         {
             type: 'confirm',
             name: 'again',
@@ -44,15 +72,28 @@ const teamCollection = async (inputs = []) => {
             default: 'true'
         }
     ];
-
+    
     const {again, ...answers} = await inquirer.prompt(prompts)
     const newInputs = [...inputs, answers]
     return again ? teamCollection(newInputs) : newInputs;
 }
 
+function generateTeamObjects(input){
+    let outputArray = []
+
+    input.forEach(element => {
+        if(element.role === 'Manager'){
+            console.log('Generating Manager...')
+            let manager = new Manager(element.firstName + ' ' + element.lastName, element.id ,element.email, element.officeNumber)
+            console.log('Manager: ', manager)
+        }
+    });
+}
+
 const main = async () => {
     const input = await teamCollection()
     console.log('Here we go...:', input)
+    let teamArray = generateTeamObjects(input)
 }
 
 main();
