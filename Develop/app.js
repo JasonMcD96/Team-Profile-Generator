@@ -82,18 +82,43 @@ function generateTeamObjects(input){
     let outputArray = []
 
     input.forEach(element => {
+
         if(element.role === 'Manager'){
             console.log('Generating Manager...')
             let manager = new Manager(element.firstName + ' ' + element.lastName, element.id ,element.email, element.officeNumber)
-            console.log('Manager: ', manager)
+            outputArray.push(manager)
+
+        } else if(element.role === 'Intern'){
+            console.log('Generating Intern...')
+            let intern = new Intern(element.firstName + ' ' + element.lastName, element.id ,element.email, element.school)
+            outputArray.push(intern)
+        }else if(element.role === 'Engineer'){
+            console.log('Generating Engineer...')
+            let engineer = new Manager(element.firstName + ' ' + element.lastName, element.id ,element.email, element.github)
+            outputArray.push(engineer)
         }
-    });
+
+    })
+    return outputArray
+}
+
+function writeHTML(text){
+    // make the output directory
+    fs.mkdir(OUTPUT_DIR, {recursive: true},(err) => {
+        if (err) throw err
+    })
+
+    fs.writeFile(outputPath, text, function (err){
+        if(err) throw err
+    })
 }
 
 const main = async () => {
     const input = await teamCollection()
     console.log('Here we go...:', input)
     let teamArray = generateTeamObjects(input)
+    let html = render(teamArray)
+    writeHTML(html)
 }
 
 main();
