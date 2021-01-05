@@ -1,0 +1,21 @@
+body {
+    background-color: blanchedalmond;
+}
+
+.team-heading {
+    background-color: cadetblue
+}
+
+.list-group-item {
+    font-weight: bold;
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+.employee-card {
+    background-color: whitesmoke;
+    margin-left: 10px;
+    margin-right: 10px;
+}
