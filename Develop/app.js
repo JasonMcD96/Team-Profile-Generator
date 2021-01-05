@@ -94,7 +94,7 @@ function generateTeamObjects(input){
             outputArray.push(intern)
         }else if(element.role === 'Engineer'){
             console.log('Generating Engineer...')
-            let engineer = new Manager(element.firstName + ' ' + element.lastName, element.id ,element.email, element.github)
+            let engineer = new Engineer (element.firstName + ' ' + element.lastName, element.id ,element.email, element.github)
             outputArray.push(engineer)
         }
 
